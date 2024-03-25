@@ -10,7 +10,7 @@ export const useUserActions = () => {
   };
   
 
-  const addUser = (name, email, github) => {
+  const addUser = ({ name, email, github }) => {
     dispatch(addNewUser({name, email, github}))
   }
   return {handleRemoveUser, addUser}

@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import usersReducer from "./users/slice"
 
 
-
+//as the middleware gets ANY  action, the persistance in the localstorage will be functional with any function we want to trigger, such as delete or add user withou any other code than this automatically, see the line: next(action) 
 const persistanceMiddleware = (store) => (next) => (action) => {
   next(action);
   localStorage.setItem('reduxState', JSON.stringify(store.getState()))

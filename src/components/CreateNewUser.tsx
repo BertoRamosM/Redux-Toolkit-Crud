@@ -1,14 +1,20 @@
-import React from "react";
-import { Button, Card, TextInput, Title } from "@tremor/react";
+import React, { useState } from "react";
+import { Badge, Button, Card, TextInput, Title } from "@tremor/react";
 import {useUserActions} from '../hooks/useUsersActions'
 
 const CreateNewUser = () => {
 
   const {addUser}  = useUserActions()
 
+  //we check if the result its ok with this local state
+  const [result, setResult] = useState<'ok' | '!ok' | null>(null)
+
   //we have to type the event, lol
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
+    setResult(null)
+
     const form = event.currentTarget
     const formData = new FormData(form)
 
@@ -18,7 +24,16 @@ const CreateNewUser = () => {
     const github = formData.get('github') as string
 
 
-    addUser(name, email, github)
+    // here as we return, the function stops running
+    if (!name || !email || !github) {
+      return setResult('!ok')
+    }
+
+
+    addUser({ name, email, github })
+    setResult('ok')
+    //this cleans the form at the end!!
+    form.reset()
   }
 
   return (
@@ -35,6 +50,18 @@ const CreateNewUser = () => {
         <Button type="submit" className="py-4">
           Create new user
         </Button>
+        <span>
+          {result === "ok" && (
+            <Badge className="bg-green-400 size-10 px-6 mx-6 my-4">
+              New User Added!
+            </Badge>
+          )}
+          {result === "!ok" && (
+            <Badge className="bg-red-500 size-12 px-6 mx-6 my-4">
+              Error adding the user
+            </Badge>
+          )}
+        </span>
       </form>
     </Card>
   );
