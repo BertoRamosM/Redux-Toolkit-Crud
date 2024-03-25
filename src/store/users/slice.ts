@@ -63,12 +63,14 @@ export const usersSlice = createSlice({
   reducers: {
     //here we can pass the PayloadAction with the type we want to assign to our payload in our reducer
     deleteUserbyId: (state, action: PayloadAction <UserId>) => {
-
       //this comment on the bottom would be the way of tyyping the payload without the PayloadAction
       /*  { type: string, payload: UserId } */
-      
       const id = action.payload;
       return state.filter((user)=> user.id !== id)
+    },
+    addNewUser: (state, action: PayloadAction<User>) => {
+      const id = crypto.randomUUID()
+      return [...state,  {id, ...action.payload}]
     }
   },
 })
@@ -76,5 +78,5 @@ export const usersSlice = createSlice({
 export default usersSlice.reducer
 
 //the best way to use the reducer its to export the action, like so:
-export const { deleteUserbyId } = usersSlice.actions
+export const { deleteUserbyId, addNewUser } = usersSlice.actions
 //then we can use this function in any component only by importing this
