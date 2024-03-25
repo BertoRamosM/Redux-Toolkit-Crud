@@ -1,21 +1,7 @@
 import { createSlice , PayloadAction} from '@reduxjs/toolkit'
 // we can type the payload in redux thanks to Payload action
 
-export type UserId = string
-
-export interface User {
-  name: string,
-  email: string,
-  github: string,
-}
-
-export interface UserWithId extends User{
-  id: UserId
-}
-
-
-const initialState: UserWithId[] = [
- 
+const DEFAULT_STATE = [
   {
     id: "1",
     name: "Yazman Rodriguez",
@@ -48,6 +34,29 @@ const initialState: UserWithId[] = [
   },
 ];
 
+export type UserId = string
+
+export interface User {
+  name: string,
+  email: string,
+  github: string,
+}
+
+export interface UserWithId extends User{
+  id: UserId
+}
+
+
+const initialState: UserWithId[] = (() => {
+  const persistedState = localStorage.getItem("reduxState")
+  if (persistedState) {
+    return JSON.parse(persistedState).users
+  }
+  return DEFAULT_STATE
+})()
+
+
+
 export const usersSlice = createSlice({
   name: 'users',
   initialState,
@@ -61,7 +70,7 @@ export const usersSlice = createSlice({
       const id = action.payload;
       return state.filter((user)=> user.id !== id)
     }
-  }
+  },
 })
 
 export default usersSlice.reducer

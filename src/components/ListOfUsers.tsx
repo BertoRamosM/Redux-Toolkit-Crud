@@ -11,21 +11,28 @@ import {
 } from '@tremor/react';
 import DeleteIcon from './DeleteIcon';
 import EditIcon from './EditIcon';
-import { deleteUserbyId, UserId } from "../store/users/slice";
+
 
 // here we import the hook to type the users
-import { useAppDispatch, useAppSelector } from '../hooks/store';
+import { useAppSelector } from '../hooks/store';
+import { useUserActions } from '../hooks/useUsersActions';
 
 export default function ListOfUsers() {
 
   //here we use the useApp selector that types the users state
   const users = useAppSelector((state) => state.users)
 
-  const dispatch = useAppDispatch()
+
+  //this is not a recomended way to use it, because we show the underlying of our logic, the best way to deal with this is by passing the logic to custom hooks, and then executing the hook. In this case we have created the hook useUserActions to store all the logic.
+  /* const dispatch = useAppDispatch()
 
   const handleRemoveUser = (id: UserId) => {
-    
-  }
+    dispatch(deleteUserbyId(id))
+  } */
+
+
+  //that would be the correct way of using it
+  const { handleRemoveUser } = useUserActions()
 
 
 
