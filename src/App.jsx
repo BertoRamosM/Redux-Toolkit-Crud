@@ -1,6 +1,6 @@
 
 import './App.css'
-import ListOfUsers from './components/ListOfUsers';
+import ListOfUsers from './components/ListOfUsers.tsx';
 
 
 

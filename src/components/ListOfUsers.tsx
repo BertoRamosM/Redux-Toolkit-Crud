@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Table,
   TableBody,
@@ -10,11 +11,24 @@ import {
 } from '@tremor/react';
 import DeleteIcon from './DeleteIcon';
 import EditIcon from './EditIcon';
-import { useSelector } from 'react-redux';
+import { deleteUserbyId, UserId } from "../store/users/slice";
 
+// here we import the hook to type the users
+import { useAppDispatch, useAppSelector } from '../hooks/store';
 
 export default function ListOfUsers() {
-  const users = useSelector((state) => state.users)
+
+  //here we use the useApp selector that types the users state
+  const users = useAppSelector((state) => state.users)
+
+  const dispatch = useAppDispatch()
+
+  const handleRemoveUser = (id: UserId) => {
+    
+  }
+
+
+
   return (
     <>
       <div className='flex align-center gap-6'>
@@ -41,7 +55,7 @@ export default function ListOfUsers() {
         </TableHead>
         <TableBody>
           {users.map((item) => (
-            <TableRow key={item.workspace}>
+            <TableRow key={item.id}>
               <TableCell>{item.id}</TableCell>
               <TableCell className="flex gap-6 items-center">
                 <img
@@ -56,8 +70,8 @@ export default function ListOfUsers() {
                 <button>
                   <EditIcon />
                 </button>
-                <button>
-                  <DeleteIcon />
+                <button onClick={()=> handleRemoveUser(item.id)}>
+                  <DeleteIcon/>
                 </button>
               </TableCell>
             </TableRow>

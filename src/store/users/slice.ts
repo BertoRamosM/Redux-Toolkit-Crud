@@ -1,4 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice , PayloadAction} from '@reduxjs/toolkit'
+// we can type the payload in redux thanks to Payload action
+
+export type UserId = string
 
 export interface User {
   name: string,
@@ -7,7 +10,7 @@ export interface User {
 }
 
 export interface UserWithId extends User{
-  id: string
+  id: UserId
 }
 
 
@@ -48,7 +51,21 @@ const initialState: UserWithId[] = [
 export const usersSlice = createSlice({
   name: 'users',
   initialState,
-  reducers: {}
+  reducers: {
+    //here we can pass the PayloadAction with the type we want to assign to our payload in our reducer
+    deleteUserbyId: (state, action: PayloadAction <UserId>) => {
+
+      //this comment on the bottom would be the way of tyyping the payload without the PayloadAction
+      /*  { type: string, payload: UserId } */
+      
+      const id = action.payload;
+      return state.filter((user)=> user.id !== id)
+    }
+  }
 })
 
 export default usersSlice.reducer
+
+//the best way to use the reducer its to export the action, like so:
+export const { deleteUserbyId } = usersSlice.actions
+//then we can use this function in any component only by importing this
